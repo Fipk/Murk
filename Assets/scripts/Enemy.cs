@@ -9,6 +9,7 @@ public class Enemy : MovingObject
     private Animator animator;
     private Transform target;
     private bool skipMove;
+    public GameObject[] test;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -17,6 +18,7 @@ public class Enemy : MovingObject
         animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
         base.Start();
+        test = GameObject.FindGameObjectsWithTag("Wall");
     }
 
     // Update is called once per frame
@@ -43,9 +45,11 @@ public class Enemy : MovingObject
 
         if (Mathf.Abs (target.position.x - transform.position.x) < float.Epsilon)
         {
+            Debug.Log("x: " + target.position.x + " " + transform.position.x);
             yDir = target.position.y > transform.position.y ? 1 : -1;
         } else
         {
+            Debug.Log("y: " + target.position.x + " " + transform.position.x);
             xDir = target.position.x > transform.position.x ? 1 : -1;
         }
         AttemptMove<Player>(xDir, yDir);

@@ -41,6 +41,7 @@ public class BoardManager : MonoBehaviour
                 gridPositions.Add(new Vector3(x, y, 0f));
             }
         }
+        
     }
 
     void BoardSetup()
