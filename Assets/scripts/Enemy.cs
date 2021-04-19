@@ -45,11 +45,30 @@ public class Enemy : MovingObject
 
         if (Mathf.Abs (target.position.x - transform.position.x) < float.Epsilon)
         {
-            Debug.Log("x: " + target.position.x + " " + transform.position.x);
+            Debug.Log("x: " + target.position.x + " " + transform.position.x + "\n L'ennemi bouge en y");
             yDir = target.position.y > transform.position.y ? 1 : -1;
+            for (int i = 0; i < test.Length; i++) {
+                if ((test[i].transform.position.y == transform.position.y - 1 || test[i].transform.position.y == transform.position.y + 1) && test[i].transform.position.x == transform.position.x)
+                {
+                    Debug.Log("\n Je suis dedans.");
+                    if (test[i].transform.position.y == transform.position.y && test[i].transform.position.x == transform.position.x+1)
+                    {
+                        Debug.Log("\nIl bouge à gauche.");
+                        yDir = 0;
+                        xDir = -1;
+                        return;
+                    } else if (test[i].transform.position.y == transform.position.y && test[i].transform.position.x == transform.position.x - 1)
+                    {
+                        Debug.Log("\nIl bouge à droite.");
+                        yDir = 0;
+                        xDir = 1;
+                        return;
+                    }                   
+                } 
+            }
         } else
         {
-            Debug.Log("y: " + target.position.x + " " + transform.position.x);
+            Debug.Log("y: " + target.position.x + " " + transform.position.x + "\n L'ennemi bouge en x");
             xDir = target.position.x > transform.position.x ? 1 : -1;
         }
         AttemptMove<Player>(xDir, yDir);
