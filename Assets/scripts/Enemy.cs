@@ -5,7 +5,7 @@ using UnityEngine;
 public class Enemy : MovingObject
 {
     public int playerDamage;
-
+    public int enemyLife = 50;
     private Animator animator;
     private Transform target;
     private bool skipMove;
@@ -24,7 +24,20 @@ public class Enemy : MovingObject
     // Update is called once per frame
     void Update()
     {
-        
+        checkLife();
+    }
+
+    public void loseLife()
+    {
+        enemyLife -= 25;
+    }
+
+    void checkLife()
+    {
+        if (this.enemyLife <= 0)
+        {
+            this.gameObject.SetActive(false);
+        }
     }
 
     protected override void AttemptMove <T> (int xDir, int yDir)

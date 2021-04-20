@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MovingObject
 {
@@ -9,6 +10,7 @@ public class Player : MovingObject
     public int pointsPerFood = 10;
     public int pointsPerSoda = 20;
     public float restartLevelDelay = 1f;
+    public Text HealthText;
 
     private Animator animator;
     private int food;
@@ -18,6 +20,7 @@ public class Player : MovingObject
     {
         animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints;
+        HealthText.text = "Health: " + food;
         base.Start();
     }
 
@@ -40,7 +43,7 @@ public class Player : MovingObject
         GameManager.instance.playerFoodPoints = food;
     }
 
-    private void OnTriggerEnter2D (Collider2D other)
+    public void OnTriggerEnter2D (Collider2D other)
     {
         if (other.tag == "Exit")
         {
@@ -49,10 +52,12 @@ public class Player : MovingObject
         } else if (other.tag == "Food")
         {
             food += pointsPerFood;
+            HealthText.text = "+" + pointsPerFood + " Health: " + food;
             other.gameObject.SetActive(false);
         } else if (other.tag == "Soda")
         {
             food += pointsPerSoda;
+            HealthText.text = "+" + pointsPerSoda + " Health: " + food;
             other.gameObject.SetActive(false);
         }
     }
@@ -60,6 +65,7 @@ public class Player : MovingObject
     protected override void AttemptMove <T> (int xDir, int yDir)
     {
         food--;
+        HealthText.text = "Health: " + food;
         base.AttemptMove<T>(xDir, yDir);
         CheckIfGameOver();
 
@@ -82,8 +88,10 @@ public class Player : MovingObject
     {
         animator.SetTrigger("playerHit");
         food -= loss;
+        HealthText.text = "-" + loss + " Health: " + food;
         CheckIfGameOver();
     }
+
 
     private void CheckIfGameOver()
     {
