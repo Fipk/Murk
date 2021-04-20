@@ -11,12 +11,15 @@ public abstract class MovingObject : MonoBehaviour
     private Rigidbody2D rb2D;
     private float inverseMoveTime;
     private bool isMoving;
+    
+    
     // Start is called before the first frame update
     protected virtual void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
         rb2D = GetComponent<Rigidbody2D>();
         inverseMoveTime = 1f / moveTime;
+        
     }
 
     protected bool Move (int xDir, int yDir, out RaycastHit2D hit)
@@ -30,7 +33,9 @@ public abstract class MovingObject : MonoBehaviour
         
         if(hit.transform == null && !isMoving)
         {
-            StartCoroutine(SmoothMovement(end));
+            
+                StartCoroutine(SmoothMovement(end));
+            
             return true;
         }
         return false;
@@ -54,7 +59,7 @@ public abstract class MovingObject : MonoBehaviour
         isMoving = false;
     }
 
-    protected virtual void AttemptMove <T> (int xDir, int yDir)
+    protected virtual void AttemptMove <T> (int xDir, int yDir,bool isPlayer = false)
         where T : Component
     {
         RaycastHit2D hit;
@@ -64,11 +69,14 @@ public abstract class MovingObject : MonoBehaviour
             return;
         }
         T hitComponent = hit.transform.GetComponent<T>();
-
+        if (isPlayer && hit.transform.GetComponent<Enemy>() != null)
+        {
+            hit.transform.GetComponent<Enemy>().loseEnemyHp(2);                       
+        }
         if (!canMove && hitComponent != null)
         {
             OnCantMove(hitComponent);
-        }
+        } 
     }
 
     protected abstract void OnCantMove <T> (T component)

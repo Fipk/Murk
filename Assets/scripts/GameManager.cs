@@ -38,7 +38,10 @@ public class GameManager : MonoBehaviour
 
     private void OnLevelWasLoaded (int index)
     {
-        level++;
+        if (level == 1)
+        {
+            return;
+        }
         InitGame();
     }
 
@@ -48,7 +51,7 @@ public class GameManager : MonoBehaviour
 
         levelImage = GameObject.Find("LevelImage");
         levelText = GameObject.Find("LevelText").GetComponent<Text>();
-        levelText.text = "Day " + level;
+        levelText.text = "Level " + level;
         levelImage.SetActive(true);
         Invoke("HideLevelImage", levelStartDelay);
 

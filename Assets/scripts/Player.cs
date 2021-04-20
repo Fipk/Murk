@@ -11,7 +11,6 @@ public class Player : MovingObject
     public int pointsPerSoda = 20;
     public float restartLevelDelay = 1f;
     public Text HealthText;
-
     private Animator animator;
     private int food;
 
@@ -21,7 +20,7 @@ public class Player : MovingObject
         animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints;
         HealthText.text = "Health: " + food;
-        base.Start();
+        base.Start();        
     }
 
     void Update()
@@ -47,6 +46,7 @@ public class Player : MovingObject
     {
         if (other.tag == "Exit")
         {
+            GameManager.instance.level++;
             Invoke("Restart", restartLevelDelay);
             enabled = false;
         } else if (other.tag == "Food")
@@ -59,14 +59,14 @@ public class Player : MovingObject
             food += pointsPerSoda;
             HealthText.text = "+" + pointsPerSoda + " Health: " + food;
             other.gameObject.SetActive(false);
-        }
+        } 
     }
 
-    protected override void AttemptMove <T> (int xDir, int yDir)
+    protected override void AttemptMove <T> (int xDir, int yDir, bool isPlayer = false)
     {
         food--;
         HealthText.text = "Health: " + food;
-        base.AttemptMove<T>(xDir, yDir);
+        base.AttemptMove<T>(xDir, yDir,true);
         CheckIfGameOver();
 
         GameManager.instance.playersTurn = false;
