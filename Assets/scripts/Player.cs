@@ -7,14 +7,22 @@ using UnityEngine.UI;
 public class Player : MovingObject
 {
     public int wallDamage = 1;
+    public static int damageEnemy = 1;
     public int pointsPerFood = 10;
     public int pointsPerSoda = 20;
     public float restartLevelDelay = 1f;
     public Text HealthText;
-    private Animator animator;
+    public Text TimerDamage;
+    public static Animator animator;
     private int food;
-    public static bool isWeapon = false;
-    public static GameObject Potion;
+    public static bool isPotionLife = false;
+    public static bool isPotionDamage = false;
+    public static bool isPotionTimerDamage = false;
+    public static GameObject PotionLife;
+    public static GameObject PotionDamage;
+    public static GameObject PotionTimerDamage;
+    public static float timerRemaining = 0;
+    public static bool timerIsRunning = false;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -22,8 +30,21 @@ public class Player : MovingObject
         animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints;
         HealthText.text = "Health: " + food;
-        Potion = GameObject.Find("Potion");
-        Potion.SetActive(false);
+        PotionLife = GameObject.Find("PotionLife");
+        PotionDamage = GameObject.Find("PotionDamage");
+        PotionTimerDamage = GameObject.Find("PotionTimerDamage");
+        if (isPotionLife)
+            PotionLife.SetActive(true);
+        else
+            PotionLife.SetActive(false);
+        if (isPotionDamage)
+            PotionDamage.SetActive(true);
+        else
+            PotionDamage.SetActive(false);
+        if (isPotionTimerDamage)
+            PotionTimerDamage.SetActive(true);
+        else
+            PotionTimerDamage.SetActive(false);
         base.Start();        
     }
 
@@ -32,12 +53,42 @@ public class Player : MovingObject
         if (!GameManager.instance.playersTurn) return;
 
         if (Input.GetKeyDown("1"))  {
-            if (isWeapon)
+            if (isPotionLife)
             {                
                 food += 20;
                 HealthText.text = "Health: " + food;
-                Potion.SetActive(false);
-                isWeapon = false; 
+                PotionLife.SetActive(false);
+                isPotionLife = false; 
+            }
+        }
+        if (Input.GetKeyDown("2"))
+        {
+            if (isPotionDamage)
+            {
+                PotionTimerDamage.SetActive(true);
+                isPotionTimerDamage = true;
+                timerIsRunning = true;
+                timerRemaining = 15;
+                damageEnemy++;
+                PotionDamage.SetActive(false);
+                isPotionDamage = false;
+            }
+        }
+
+        if (timerIsRunning)
+        {
+            if (timerRemaining > 0)
+            {
+                TimerDamage.text = "Bonus damage: " + Mathf.FloorToInt(timerRemaining);
+                timerRemaining -= Time.deltaTime;
+
+            } else
+            {
+                PotionTimerDamage.SetActive(false);
+                isPotionTimerDamage = false;
+                damageEnemy--;
+                timerRemaining = 0;
+                timerIsRunning = false;
             }
         }
 

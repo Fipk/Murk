@@ -22,12 +22,27 @@ public class Wall : MonoBehaviour
         if (hp <= 0)
         {
             gameObject.SetActive(false);
-            int xrand = Random.Range(1, 3);
-            if (xrand == 1)
+            RandomObject();
+        }
+    }
+
+    public void RandomObject()
+    {
+        int loot = Random.Range(1, 3);
+        if (loot == 1)
+        {
+            int chanceLoot = Random.Range(1, 100);
+            if (chanceLoot > 90)
             {
-                Player.isWeapon = true;
-                Player.Potion.SetActive(true);
+                Player.isPotionLife = true;
+                Player.PotionLife.SetActive(true);
             }
+            else
+            {
+                Player.isPotionDamage = true;
+                Player.PotionDamage.SetActive(true);
+            }
+
         }
     }
 

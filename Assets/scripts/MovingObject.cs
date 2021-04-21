@@ -71,7 +71,8 @@ public abstract class MovingObject : MonoBehaviour
         T hitComponent = hit.transform.GetComponent<T>();
         if (isPlayer && hit.transform.GetComponent<Enemy>() != null)
         {
-            hit.transform.GetComponent<Enemy>().loseEnemyHp(2);                       
+            Player.animator.SetTrigger("playerChop");
+            hit.transform.GetComponent<Enemy>().loseEnemyHp(Player.damageEnemy);                       
         }
         if (!canMove && hitComponent != null)
         {
