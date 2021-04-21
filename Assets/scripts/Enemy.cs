@@ -23,14 +23,18 @@ public class Enemy : MovingObject
     }
     void Update()
     {
-
+        checkEnemyHp();
     }
 
     public void loseEnemyHp(int loss)
     {
         hp = hp - loss;
+    }
+
+    public void checkEnemyHp()
+    {
         if (hp <= 0)
-        {            
+        {
             gameObject.SetActive(false);
             canMove = false;
         }

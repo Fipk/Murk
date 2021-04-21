@@ -16,10 +16,19 @@ public class Wall : MonoBehaviour
     }
     public void DamageWall (int loss)
     {
+        
         spriteRenderer.sprite = dmgSprite;
         hp -= loss;
         if (hp <= 0)
+        {
             gameObject.SetActive(false);
+            int xrand = Random.Range(1, 3);
+            if (xrand == 1)
+            {
+                Player.isWeapon = true;
+                Player.Potion.SetActive(true);
+            }
+        }
     }
 
     // Update is called once per frame

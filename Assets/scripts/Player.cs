@@ -13,6 +13,8 @@ public class Player : MovingObject
     public Text HealthText;
     private Animator animator;
     private int food;
+    public static bool isWeapon = false;
+    public static GameObject Potion;
 
     // Start is called before the first frame update
     protected override void Start()
@@ -20,12 +22,24 @@ public class Player : MovingObject
         animator = GetComponent<Animator>();
         food = GameManager.instance.playerFoodPoints;
         HealthText.text = "Health: " + food;
+        Potion = GameObject.Find("Potion");
+        Potion.SetActive(false);
         base.Start();        
     }
 
     void Update()
     {
         if (!GameManager.instance.playersTurn) return;
+
+        if (Input.GetKeyDown("1"))  {
+            if (isWeapon)
+            {                
+                food += 20;
+                HealthText.text = "Health: " + food;
+                Potion.SetActive(false);
+                isWeapon = false; 
+            }
+        }
 
         int horizontal = 0;
         int vertical = 0;
@@ -64,7 +78,6 @@ public class Player : MovingObject
 
     protected override void AttemptMove <T> (int xDir, int yDir, bool isPlayer = false)
     {
-        food--;
         HealthText.text = "Health: " + food;
         base.AttemptMove<T>(xDir, yDir,true);
         CheckIfGameOver();
