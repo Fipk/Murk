@@ -21,6 +21,7 @@ public class Wall : MonoBehaviour
         hp -= loss;
         if (hp <= 0)
         {
+            Player.SetScore(5);
             gameObject.SetActive(false);
             RandomObject();
         }
@@ -32,7 +33,7 @@ public class Wall : MonoBehaviour
         if (loot == 1)
         {
             int chanceLoot = Random.Range(1, 100);
-            if (chanceLoot > 90)
+            if (chanceLoot < 90)
             {
                 Player.isPotionLife = true;
                 Player.PotionLife.SetActive(true);

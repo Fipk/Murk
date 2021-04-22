@@ -7,14 +7,16 @@ using UnityEngine.UI;
 public class Player : MovingObject
 {
     public int wallDamage = 1;
+    public static int scorePlayer = 0;
     public static int damageEnemy = 1;
-    public int pointsPerFood = 10;
+    public int pointsPerhealth = 10;
     public int pointsPerSoda = 20;
     public float restartLevelDelay = 1f;
     public Text HealthText;
     public Text TimerDamage;
+    public Text ScoreText;
     public static Animator animator;
-    private int food;
+    private int health;
     public static bool isPotionLife = false;
     public static bool isPotionDamage = false;
     public static bool isPotionTimerDamage = false;
@@ -24,12 +26,14 @@ public class Player : MovingObject
     public static float timerRemaining = 0;
     public static bool timerIsRunning = false;
 
+    private float[] noiseValues;
+
     // Start is called before the first frame update
     protected override void Start()
     {
         animator = GetComponent<Animator>();
-        food = GameManager.instance.playerFoodPoints;
-        HealthText.text = "Health: " + food;
+        health = GameManager.instance.playerHealthPoints;
+        HealthText.text = "Health: " + health;    
         PotionLife = GameObject.Find("PotionLife");
         PotionDamage = GameObject.Find("PotionDamage");
         PotionTimerDamage = GameObject.Find("PotionTimerDamage");
@@ -48,15 +52,21 @@ public class Player : MovingObject
         base.Start();        
     }
 
+    public static void SetScore(int plus)
+    {
+        scorePlayer += plus;
+        
+    }
+
     void Update()
     {
         if (!GameManager.instance.playersTurn) return;
-
+        ScoreText.text = "Score: " + scorePlayer;
         if (Input.GetKeyDown("1"))  {
             if (isPotionLife)
             {                
-                food += 20;
-                HealthText.text = "Health: " + food;
+                health += 20;
+                HealthText.text = "Health: " + health;
                 PotionLife.SetActive(false);
                 isPotionLife = false; 
             }
@@ -75,9 +85,17 @@ public class Player : MovingObject
             }
         }
 
+        if (Input.GetKeyDown("space"))
+        {
+            System.DateTime foo = System.DateTime.Now;
+            long unixTime = ((System.DateTimeOffset)foo).ToUnixTimeSeconds();
+            Debug.Log((int)unixTime);
+            
+        }
+
         if (timerIsRunning)
         {
-            if (timerRemaining > 0)
+            if (timerRemaining >= 0)
             {
                 TimerDamage.text = "Bonus damage: " + Mathf.FloorToInt(timerRemaining);
                 timerRemaining -= Time.deltaTime;
@@ -104,7 +122,7 @@ public class Player : MovingObject
     }
     private void OnDisable()
     {
-        GameManager.instance.playerFoodPoints = food;
+        GameManager.instance.playerHealthPoints = health;
     }
 
     public void OnTriggerEnter2D (Collider2D other)
@@ -116,20 +134,22 @@ public class Player : MovingObject
             enabled = false;
         } else if (other.tag == "Food")
         {
-            food += pointsPerFood;
-            HealthText.text = "+" + pointsPerFood + " Health: " + food;
+            health += pointsPerhealth;
+            SetScore(pointsPerhealth);
+            HealthText.text = "+" + pointsPerhealth + " Health: " + health;
             other.gameObject.SetActive(false);
         } else if (other.tag == "Soda")
         {
-            food += pointsPerSoda;
-            HealthText.text = "+" + pointsPerSoda + " Health: " + food;
+            health += pointsPerSoda;
+            SetScore(pointsPerSoda);
+            HealthText.text = "+" + pointsPerSoda + " Health: " + health;
             other.gameObject.SetActive(false);
         } 
     }
 
     protected override void AttemptMove <T> (int xDir, int yDir, bool isPlayer = false)
     {
-        HealthText.text = "Health: " + food;
+        HealthText.text = "Health: " + health;
         base.AttemptMove<T>(xDir, yDir,true);
         CheckIfGameOver();
 
@@ -148,18 +168,18 @@ public class Player : MovingObject
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public void LoseFood (int loss)
+    public void LoseHealth (int loss)
     {
         animator.SetTrigger("playerHit");
-        food -= loss;
-        HealthText.text = "-" + loss + " Health: " + food;
+        health -= loss;
+        HealthText.text = "-" + loss + " Health: " + health;
         CheckIfGameOver();
     }
 
 
     private void CheckIfGameOver()
     {
-        if (food <= 0)
+        if (health <= 0)
             GameManager.instance.GameOver();
     }
 }

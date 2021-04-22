@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public float turnDelay = 0.1f;
     public static GameManager instance = null;
     public BoardManager boardScript;
-    public int playerFoodPoints = 1000;
+    public int playerHealthPoints = 100;
     [HideInInspector] public bool playersTurn = true;
     public int level = 1;
 
@@ -18,10 +18,13 @@ public class GameManager : MonoBehaviour
     private List<Enemy> enemies;
     private bool enemiesMoving;
     private bool doingSetup;
+    public static bool isSeed = true;
+    private static int[] seeds = new int[10];
+    System.DateTime foo;
 
     // Start is called before the first frame update
-    
-     void Awake()
+
+    void Awake()
     {
         if (instance == null)
         {
@@ -30,9 +33,19 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        if (isSeed)
+        {          
+            for (int i = 0; i < 10; i++)
+            {            
+                foo = System.DateTime.Now;
+                long unixTime = ((System.DateTimeOffset)foo).ToUnixTimeSeconds();
+                seeds[i] = (int)unixTime + i;
+            }
+            isSeed = false;
+        }
         DontDestroyOnLoad(gameObject);
         enemies = new List<Enemy>();
-        boardScript = GetComponent<BoardManager>();
+        boardScript = GetComponent<BoardManager>();       
         InitGame();
     }
 
@@ -41,7 +54,7 @@ public class GameManager : MonoBehaviour
         if (level == 1)
         {
             return;
-        }
+        }           
         InitGame();
     }
 
@@ -56,7 +69,7 @@ public class GameManager : MonoBehaviour
         Invoke("HideLevelImage", levelStartDelay);
 
         enemies.Clear();
-        boardScript.SetupScene(level);
+        boardScript.SetupScene(level, seeds[level]);
     }
 
     private void HideLevelImage()
@@ -96,6 +109,7 @@ public class GameManager : MonoBehaviour
         }
         for (int i =0; i < enemies.Count; i++)
         {
+            
             enemies[i].MoveEnemy();
             yield return new WaitForSeconds(enemies[i].moveTime);
         }

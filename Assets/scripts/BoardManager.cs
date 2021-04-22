@@ -27,6 +27,7 @@ public class BoardManager : MonoBehaviour
     public GameObject[] foodTiles;
     public GameObject[] enemyTiles;
     public GameObject[] outerWallTiles;
+    
 
     private Transform boardHolder;
     private List<Vector3> gridPositions = new List<Vector3>();
@@ -64,34 +65,39 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    Vector3 RandomPosition()
+    Vector3 RandomPosition(int seed)
     {
-        int randomIndex = Random.Range(0, gridPositions.Count);
+        Random.InitState(seed);
+        int randomIndex = Random.Range(0, gridPositions.Count) + (int)(Random.value * 5);
+        if (randomIndex > gridPositions.Count)
+        {
+            randomIndex = randomIndex - gridPositions.Count;
+        }
         Vector3 randomPosition = gridPositions[randomIndex];
         gridPositions.RemoveAt(randomIndex);
         return randomPosition;
     }
 
-    void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
+    void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum, int seed)
     {
         int objectCount = Random.Range(minimum, maximum + 1);
         for (int i = 0; i < objectCount; i++)
         {
-            Vector3 randomPosition = RandomPosition();
+            Vector3 randomPosition = RandomPosition(seed);
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
             Instantiate(tileChoice, randomPosition, Quaternion.identity);
         }
 
     }
 
-    public void SetupScene(int level)
+    public void SetupScene(int level, int seed)
     {
         BoardSetup();
         InitialiseList();
-        LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum);
-        LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum);
-        int enemyCount = (int)Mathf.Log(level, 2f);
-        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
+        LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum, seed);
+        LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum, seed);
+        int enemyCount = (int)(level/3);
+        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount,seed);
         Instantiate(exit, new Vector3(columns - 1, rows - 1, 0f), Quaternion.identity);
     }
 }

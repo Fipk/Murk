@@ -62,7 +62,7 @@ public class Enemy : MovingObject
         {
             //Debug.Log("x: " + target.position.x + " " + transform.position.x + "\n L'ennemi bouge en y");
             yDir = target.position.y > transform.position.y ? 1 : -1;
-            for (int i = 0; i < test.Length; i++) {
+            /*for (int i = 0; i < test.Length; i++) {
                 if ((test[i].transform.position.y == transform.position.y - 1 || test[i].transform.position.y == transform.position.y + 1) && test[i].transform.position.x == transform.position.x)
                 {
                     Debug.Log("\n Je suis dedans.");
@@ -80,7 +80,7 @@ public class Enemy : MovingObject
                         return;
                     }                   
                 } 
-            }
+            }*/
         } else
         {
             //Debug.Log("y: " + target.position.x + " " + transform.position.x + "\n L'ennemi bouge en x");
@@ -94,7 +94,7 @@ public class Enemy : MovingObject
         Player hitPlayer = component as Player;
 
         animator.SetTrigger("EnemyAttack");
-        hitPlayer.LoseFood(playerDamage);
+        hitPlayer.LoseHealth(playerDamage);
 
     }
 }
