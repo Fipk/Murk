@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     private bool enemiesMoving;
     private bool doingSetup;
     public static bool isSeed = true;
+    public static bool isRandom = true;
     private static int[] seeds = new int[10];
     System.DateTime foo;
 
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        if (isSeed)
+        if (isSeed && isRandom)
         {          
             for (int i = 0; i < 10; i++)
             {            

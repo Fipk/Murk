@@ -150,7 +150,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9, y: 0.9}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &-8621237005841435026
 MonoBehaviour:
@@ -169,3 +169,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1048576
   playerDamage: 20
+  hp: 5
+  test: []
