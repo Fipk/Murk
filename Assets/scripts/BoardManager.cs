@@ -69,9 +69,10 @@ public class BoardManager : MonoBehaviour
     {
         Random.InitState(seed);
         int randomIndex = Random.Range(0, gridPositions.Count) + (int)(Random.value * 5);
-        if (randomIndex > gridPositions.Count)
+        if (randomIndex >= gridPositions.Count)
         {
-            randomIndex = randomIndex - gridPositions.Count;
+            randomIndex = Mathf.Abs(randomIndex - gridPositions.Count);
+            
         }
         Vector3 randomPosition = gridPositions[randomIndex];
         gridPositions.RemoveAt(randomIndex);

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Player : MovingObject
 {
     public int wallDamage = 1;
+    public static string namePlayer;
     public static int scorePlayer = 0;
     public static int damageEnemy = 1;
     public int pointsPerhealth = 10;
