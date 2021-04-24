@@ -27,6 +27,7 @@ public class BoardManager : MonoBehaviour
     public GameObject[] foodTiles;
     public GameObject[] enemyTiles;
     public GameObject[] outerWallTiles;
+    public GameObject[] merchantTiles;
     
 
     private Transform boardHolder;
@@ -95,10 +96,18 @@ public class BoardManager : MonoBehaviour
     {
         BoardSetup();
         InitialiseList();
-        LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum, seed);
-        LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum, seed);
-        int enemyCount = (int)(level/3);
-        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount,seed);
+        if (level == 5)
+        {
+            LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum, seed);
+            LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum, seed);
+            LayoutObjectAtRandom(merchantTiles, 1, 1, seed);
+        } else
+        {
+            LayoutObjectAtRandom(wallTiles, wallCount.minimum, wallCount.maximum, seed);
+            LayoutObjectAtRandom(foodTiles, foodCount.minimum, foodCount.maximum, seed);
+            int enemyCount = (int)(level / 3);
+            LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount, seed);
+        }       
         Instantiate(exit, new Vector3(columns - 1, rows - 1, 0f), Quaternion.identity);
     }
 }

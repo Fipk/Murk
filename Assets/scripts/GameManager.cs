@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool playersTurn = true;
     public int level = 1;
     public static bool isLost = false;
-
+    
     private Text levelText;
     private GameObject levelImage;
     private List<Enemy> enemies;
@@ -23,7 +24,7 @@ public class GameManager : MonoBehaviour
     private bool doingSetup;
     public static bool isSeed = true;
     public static bool isRandom = true;
-    private static int[] seeds = new int[11];
+    public static int[] seeds = new int[11];
     System.DateTime foo;
     public static MongoClient client = new MongoClient("mongodb://root:root@127.0.0.1:27017");
     public static IMongoDatabase database = client.GetDatabase("murk");
@@ -37,21 +38,23 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-        } else if ( instance != this)
+        } else if (instance != this)
         {
             Destroy(gameObject);
         }
         if (isSeed && isRandom)
-        {         
+        {
             for (int i = 0; i <= 10; i++)
-            {            
+            {
                 foo = System.DateTime.Now;
                 long unixTime = ((System.DateTimeOffset)foo).ToUnixTimeSeconds();
                 seeds[i] = (int)unixTime + i;
             }
             isSeed = false;
+            
             InsertSeedDatabase();
         }
+        ApiRedis.SetStatus();
         DontDestroyOnLoad(gameObject);
         enemies = new List<Enemy>();
         boardScript = GetComponent<BoardManager>();       
@@ -88,8 +91,11 @@ public class GameManager : MonoBehaviour
         if (level == 1)
         {
             return;
-        }           
-        InitGame();
+        }
+        if (!isLost)
+        {
+            InitGame();
+        }       
     }
 
     void InitGame()
@@ -104,6 +110,12 @@ public class GameManager : MonoBehaviour
 
         enemies.Clear();
         boardScript.SetupScene(level, seeds[level]);
+    }
+
+    public void ReloadMainMenu()
+    {
+        Destroy(gameObject);
+        SceneManager.LoadScene(0);
     }
 
     private void HideLevelImage()
@@ -128,6 +140,7 @@ public class GameManager : MonoBehaviour
                 { "isComplete", false },
             };
             leaderboardCollection.InsertOne(scoreDocument);
+            ReloadMainMenu();
         }        
     }
 

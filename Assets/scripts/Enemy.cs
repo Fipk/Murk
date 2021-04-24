@@ -36,6 +36,7 @@ public class Enemy : MovingObject
         if (hp <= 0)
         {
             gameObject.SetActive(false);
+            ApiRedis.SetMoney(10);
             canMove = false;
         }
     }

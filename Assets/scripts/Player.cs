@@ -16,6 +16,8 @@ public class Player : MovingObject
     public Text HealthText;
     public Text TimerDamage;
     public Text ScoreText;
+    public Text KeyText;
+    public Text MoneyText;
     public static Animator animator;
     private int health;
     public static bool isPotionLife = false;
@@ -34,7 +36,9 @@ public class Player : MovingObject
     {
         animator = GetComponent<Animator>();
         health = GameManager.instance.playerHealthPoints;
-        HealthText.text = "Health: " + health;    
+        HealthText.text = "Health: " + health;
+        KeyText.text = "Seed " + GameManager.seeds[10].ToString();
+        MoneyText.text = "Money: " + ApiRedis.GetMoney();
         PotionLife = GameObject.Find("PotionLife");
         PotionDamage = GameObject.Find("PotionDamage");
         PotionTimerDamage = GameObject.Find("PotionTimerDamage");
@@ -86,14 +90,6 @@ public class Player : MovingObject
             }
         }
 
-        if (Input.GetKeyDown("space"))
-        {
-            System.DateTime foo = System.DateTime.Now;
-            long unixTime = ((System.DateTimeOffset)foo).ToUnixTimeSeconds();
-            Debug.Log((int)unixTime);
-            
-        }
-
         if (timerIsRunning)
         {
             if (timerRemaining >= 0)
@@ -110,7 +106,7 @@ public class Player : MovingObject
                 timerIsRunning = false;
             }
         }
-
+        
         int horizontal = 0;
         int vertical = 0;
 
@@ -145,11 +141,16 @@ public class Player : MovingObject
             SetScore(pointsPerSoda);
             HealthText.text = "+" + pointsPerSoda + " Health: " + health;
             other.gameObject.SetActive(false);
-        } 
+        }
+        else if (other.tag == "Merchant")
+        {
+            Debug.Log("salut");
+        }
     }
 
     protected override void AttemptMove <T> (int xDir, int yDir, bool isPlayer = false)
     {
+        MoneyText.text = "Money: " + ApiRedis.GetMoney();
         HealthText.text = "Health: " + health;
         base.AttemptMove<T>(xDir, yDir,true);
         CheckIfGameOver();
