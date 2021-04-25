@@ -7,19 +7,25 @@ using UnityEngine.UI;
 public class Player : MovingObject
 {
     public int wallDamage = 1;
-    public static string namePlayer;
+    public static string namePlayer = "";
     public static int scorePlayer = 0;
-    public static int damageEnemy = 1;
     public int pointsPerhealth = 10;
     public int pointsPerSoda = 20;
     public float restartLevelDelay = 1f;
+    public bool isMerchantActive = false;
+    public static bool canAttackBoss = false;
     public Text HealthText;
     public Text TimerDamage;
     public Text ScoreText;
     public Text KeyText;
     public Text MoneyText;
+    public GameObject AddDamage;
+    public GameObject AddDefense;
+    public GameObject AddHealth;
     public static Animator animator;
     private int health;
+    public static bool firstLevel = false;
+    public static bool secondLevel = false;
     public static bool isPotionLife = false;
     public static bool isPotionDamage = false;
     public static bool isPotionTimerDamage = false;
@@ -84,7 +90,7 @@ public class Player : MovingObject
                 isPotionTimerDamage = true;
                 timerIsRunning = true;
                 timerRemaining = 15;
-                damageEnemy++;
+                ApiRedis.SetDamage(1);
                 PotionDamage.SetActive(false);
                 isPotionDamage = false;
             }
@@ -101,7 +107,7 @@ public class Player : MovingObject
             {
                 PotionTimerDamage.SetActive(false);
                 isPotionTimerDamage = false;
-                damageEnemy--;
+                ApiRedis.SetDamage(-1);
                 timerRemaining = 0;
                 timerIsRunning = false;
             }
@@ -120,6 +126,36 @@ public class Player : MovingObject
     private void OnDisable()
     {
         GameManager.instance.playerHealthPoints = health;
+    }
+
+    public void AddDamageButton()
+    {
+        if (ApiRedis.GetMoney() >= 100)
+        {
+            ApiRedis.SetMoney(-100);
+            ApiRedis.SetDamage(1);
+            MoneyText.text = "Money: " + ApiRedis.GetMoney();
+        }
+    }
+
+    public void AddDefenseButton()
+    {
+        if (ApiRedis.GetMoney() >= 50)
+        {
+            ApiRedis.SetMoney(-50);
+            ApiRedis.SetDefense(1);
+            MoneyText.text = "Money: " + ApiRedis.GetMoney();
+        }
+    }
+
+    public void AddHealthButton()
+    {
+        if (ApiRedis.GetMoney() >= 20)
+        {
+            ApiRedis.SetMoney(-20);
+            health += 5;
+            MoneyText.text = "Money: " + ApiRedis.GetMoney();
+        }
     }
 
     public void OnTriggerEnter2D (Collider2D other)
@@ -144,7 +180,34 @@ public class Player : MovingObject
         }
         else if (other.tag == "Merchant")
         {
-            Debug.Log("salut");
+            if (!isMerchantActive)
+            {
+                isMerchantActive = true;
+                AddDamage.SetActive(true);
+                AddDefense.SetActive(true);
+                AddHealth.SetActive(true);
+            } else
+            {
+                isMerchantActive = false;
+                AddDamage.SetActive(false);
+                AddDefense.SetActive(false);
+                AddHealth.SetActive(false);
+            }           
+        } else if (other.tag == "BossFloor")
+        {
+            if (firstLevel && secondLevel)
+            {
+                health -= 7;
+                HealthText.text = "Health: " + health;
+            } else if (firstLevel)
+            {
+                health -= 5;
+                HealthText.text = "Health: " + health;
+            } else
+            {
+                health -= 3;
+                HealthText.text = "Health: " + health;
+            }
         }
     }
 

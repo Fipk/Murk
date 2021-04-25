@@ -35,6 +35,9 @@ public class MainMenu : MonoBehaviour
         Player.isPotionTimerDamage = false;
         Player.timerRemaining = 0;
         Player.timerIsRunning = false;
+        Player.firstLevel = false;
+        Player.secondLevel = false;
+        Player.canAttackBoss = false;
         GameManager.isSeed = true;
         GameManager.isRandom = true;
         GameManager.isLost = false;

@@ -16,8 +16,16 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool playersTurn = true;
     public int level = 1;
     public static bool isLost = false;
-    
+
+
+    public SpriteRenderer m_SpriteRenderer;
+
+
     private Text levelText;
+    public bool timerIsRunning = false;
+    public bool firstLevel = false;
+    public bool secondLevel = false;
+    private float timerRemaining = 15;
     private GameObject levelImage;
     private List<Enemy> enemies;
     private bool enemiesMoving;
@@ -25,6 +33,7 @@ public class GameManager : MonoBehaviour
     public static bool isSeed = true;
     public static bool isRandom = true;
     public static int[] seeds = new int[11];
+    public GameObject[] test;
     System.DateTime foo;
     public static MongoClient client = new MongoClient("mongodb://root:root@127.0.0.1:27017");
     public static IMongoDatabase database = client.GetDatabase("murk");
@@ -93,13 +102,32 @@ public class GameManager : MonoBehaviour
             return;
         }
         if (!isLost)
-        {
+        {            
             InitGame();
         }       
     }
 
+    void ColorLevel(float right)
+    {
+        
+        test = GameObject.FindGameObjectsWithTag("BossFloor");
+        for (int i = 0; i < test.Length; i++)
+        {
+            m_SpriteRenderer = test[i].GetComponent<SpriteRenderer>();
+            m_SpriteRenderer.color = new Color(1f,right,right,1f);
+        }
+    }
+
     void InitGame()
     {
+        if (level == 10)
+        {
+            timerIsRunning = true;
+            timerRemaining = 15;
+        }
+        
+        ApiRedis.SetLevel(level);
+        
         doingSetup = true;
 
         levelImage = GameObject.Find("LevelImage");
@@ -137,6 +165,7 @@ public class GameManager : MonoBehaviour
                 { "keySeed", lastDocument[11] },
                 { "player", Player.namePlayer },
                 { "score", Player.scorePlayer },
+                { "money", ApiRedis.GetMoney() },
                 { "isComplete", false },
             };
             leaderboardCollection.InsertOne(scoreDocument);
@@ -147,6 +176,35 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (timerIsRunning && !firstLevel)
+        {           
+            if (timerRemaining >= 0)
+            {              
+                timerRemaining -= Time.deltaTime;
+            }
+            else
+            {
+                ColorLevel(.7f);
+                firstLevel = true;
+                Player.firstLevel = true;
+                timerRemaining = 15;
+            }
+        }
+        if (timerIsRunning && firstLevel && !secondLevel)
+        {
+            if (timerRemaining >= 0)
+            {
+                timerRemaining -= Time.deltaTime;
+            }
+            else
+            {
+                ColorLevel(.4f);
+                secondLevel = true;
+                timerIsRunning = false;
+                Player.secondLevel = true;
+                timerRemaining = 15;
+            }
+        }
         if (playersTurn || enemiesMoving || doingSetup)
         {
             return;

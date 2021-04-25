@@ -22,9 +22,18 @@ public class Wall : MonoBehaviour
         hp -= loss;
         if (hp <= 0)
         {
+            if (ApiRedis.GetLevel() == 10)
+            {
+                ApiRedis.SetWallDestroy(1);
+                if (ApiRedis.GetWallDestroy() == 2)
+                {
+                    Player.canAttackBoss = true;
+                }
+            }
             Player.SetScore(5);
             gameObject.SetActive(false);
-            ApiRedis.SetMoney(5);           
+            ApiRedis.SetMoney(5);
+            
             RandomObject();
         }
 

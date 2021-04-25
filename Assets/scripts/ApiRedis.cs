@@ -15,6 +15,52 @@ public class ApiRedis : MonoBehaviour
     {
         client.Set("PotionLoot", 0);
         client.Set("Money", 0);
+        client.Set("PlayerDamage", 1);
+        client.Set("PlayerDefense", 0);
+        client.Set("level", 1);
+        client.Set("WallDestroy", 0);
+    }
+
+    public static void SetWallDestroy(int value)
+    {
+        var val = client.Get<int>("WallDestroy");
+        client.Set("WallDestroy", val + value);
+    }
+
+    public static int GetWallDestroy()
+    {
+        return client.Get<int>("WallDestroy");
+    }
+
+    public static void SetLevel(int value)
+    {
+        client.Set("level", value);
+    }
+
+    public static int GetLevel()
+    {
+        return client.Get<int>("level");
+    }
+    public static void SetDefense(int value)
+    {
+        var val = client.Get<int>("PlayerDefense");
+        client.Set("PlayerDefense", val + value);
+    }
+
+    public static int GetDefense()
+    {
+        return client.Get<int>("PlayerDefense");
+    }
+
+    public static void SetDamage(int value)
+    {
+        var val = client.Get<int>("PlayerDamage");
+        client.Set("PlayerDamage", val + value);
+    }
+
+    public static int GetDamage()
+    {
+        return client.Get<int>("PlayerDamage");
     }
 
     public static void IncrPotionChance()

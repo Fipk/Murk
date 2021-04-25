@@ -28,7 +28,16 @@ public class Enemy : MovingObject
 
     public void loseEnemyHp(int loss)
     {
-        hp = hp - loss;
+        if (ApiRedis.GetLevel() == 10)
+        {
+            if (Player.canAttackBoss)
+            {
+                hp -= loss;
+            }
+        } else
+        {
+            hp = hp - loss;
+        }       
     }
 
     public void checkEnemyHp()
@@ -95,7 +104,12 @@ public class Enemy : MovingObject
         Player hitPlayer = component as Player;
 
         animator.SetTrigger("EnemyAttack");
-        hitPlayer.LoseHealth(playerDamage);
-
+        if (ApiRedis.GetLevel() == 10)
+        {
+            hitPlayer.LoseHealth((20+playerDamage) - ApiRedis.GetDefense());
+        } else
+        {
+            hitPlayer.LoseHealth(playerDamage - ApiRedis.GetDefense());
+        }
     }
 }
