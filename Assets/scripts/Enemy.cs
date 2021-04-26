@@ -15,6 +15,10 @@ public class Enemy : MovingObject
     // Start is called before the first frame update
     protected override void Start()
     {
+        if (ApiRedis.GetParangon() > 0 && MainMenu.isParangon)
+        {
+            playerDamage += 10;
+        }
         GameManager.instance.AddEnemyToList(this);
         animator = GetComponent<Animator>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
@@ -47,6 +51,10 @@ public class Enemy : MovingObject
             gameObject.SetActive(false);
             ApiRedis.SetMoney(10);
             canMove = false;
+            if (ApiRedis.GetLevel() == 10)
+            {
+                GameManager.instance.GameWon();
+            }
         }
     }
 

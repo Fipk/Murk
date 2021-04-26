@@ -25,6 +25,7 @@ public class Player : MovingObject
     public GameObject AddHealth;
     public static Animator animator;
     private int health;
+    public static bool isStarted;
     public static bool firstLevel = false;
     public static bool secondLevel = false;
     public static bool isPotionLife = false;
@@ -43,6 +44,15 @@ public class Player : MovingObject
     {
         animator = GetComponent<Animator>();
         health = GameManager.instance.playerHealthPoints;
+        if (!isStarted && ApiRedis.GetParangon() > 1 && MainMenu.isParangon)
+        {
+            health -= 40;
+        }
+        if (GameManager.isHealthMalus && !isStarted)
+        {
+            isStarted = true;
+            health += GameManager.HealthMalus;
+        }
         HealthText.text = "Health: " + health;
         KeyText.text = "Seed " + GameManager.seeds[10].ToString();
         MoneyText.text = "Money: " + ApiRedis.GetMoney();

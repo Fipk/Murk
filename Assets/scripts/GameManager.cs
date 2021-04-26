@@ -16,7 +16,12 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public bool playersTurn = true;
     public int level = 1;
     public static bool isLost = false;
-
+    public static bool isHealthMalus = false;
+    public static bool isDefenseMalus = false;
+    public static bool isAttackMalus = false;
+    public static int HealthMalus = 0;
+    public static int DefenseMalus = 0;
+    public static int AttackMalus = 0;
 
     public SpriteRenderer m_SpriteRenderer;
 
@@ -171,6 +176,23 @@ public class GameManager : MonoBehaviour
             leaderboardCollection.InsertOne(scoreDocument);
             ReloadMainMenu();
         }        
+    }
+
+    public void GameWon()
+    {
+        var sort = Builders<BsonDocument>.Sort.Descending("keySeed");
+        var lastDocument = seedsCollection.Find(new BsonDocument()).Sort(sort).First();
+        var scoreDocument = new BsonDocument
+            {
+                { "keySeed", lastDocument[11] },
+                { "player", Player.namePlayer },
+                { "score", Player.scorePlayer },
+                { "money", ApiRedis.GetMoney() },
+                { "isComplete", true },
+            };
+        leaderboardCollection.InsertOne(scoreDocument);
+        ApiRedis.SetParangon(1);
+        ReloadMainMenu();
     }
 
     // Update is called once per frame

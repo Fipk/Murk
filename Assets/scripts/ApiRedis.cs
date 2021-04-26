@@ -15,10 +15,34 @@ public class ApiRedis : MonoBehaviour
     {
         client.Set("PotionLoot", 0);
         client.Set("Money", 0);
-        client.Set("PlayerDamage", 1);
-        client.Set("PlayerDefense", 0);
+        if (GameManager.isAttackMalus)
+        {
+            client.Set("PlayerDamage", 2+ GameManager.AttackMalus);
+        } else
+        {
+            client.Set("PlayerDamage", 2);
+        }
+        if (GameManager.isDefenseMalus)
+        {
+            client.Set("PlayerDefense", 0 + GameManager.DefenseMalus);
+        }
+        else
+        {
+            client.Set("PlayerDefense", 0);
+        }
         client.Set("level", 1);
         client.Set("WallDestroy", 0);
+    }
+
+    public static void SetParangon(int value)
+    {
+        var val = client.Get<int>("Parangon");
+        client.Set("Parangon", val + value);
+    }
+
+    public static int GetParangon()
+    {
+        return client.Get<int>("Parangon");
     }
 
     public static void SetWallDestroy(int value)
