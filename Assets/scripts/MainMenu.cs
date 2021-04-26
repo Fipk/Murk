@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviour
 {
+    #region Declarations
     public GameObject play;
     public GameObject quit;
     public GameObject inputPlay;
@@ -25,6 +26,7 @@ public class MainMenu : MonoBehaviour
     public static GameObject PotionTimerDamage;
     public static float timerRemaining = 0;
     public static bool timerIsRunning = false;
+    #endregion
 
     public void Start()
     {       

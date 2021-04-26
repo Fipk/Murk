@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Soda
   - Wall
+  - Merchant
+  - BossFloor
   layers:
   - Default
   - TransparentFX

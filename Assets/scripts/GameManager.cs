@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public static int[] seeds = new int[11];
     public GameObject[] test;
     System.DateTime foo;
-    public static MongoClient client = new MongoClient("mongodb://root:root@127.0.0.1:27017");
+    public static MongoClient client = new MongoClient("mongodb://root:root@127.0.0.1:27017/murk?authSource=admin");
     public static IMongoDatabase database = client.GetDatabase("murk");
     public static IMongoCollection<BsonDocument> seedsCollection = database.GetCollection<BsonDocument>("seeds");
     public static IMongoCollection<BsonDocument> leaderboardCollection = database.GetCollection<BsonDocument>("leaderboard");

@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Player : MovingObject
 {
+    #region Declarations
     public int wallDamage = 1;
     public static string namePlayer = "";
     public static int scorePlayer = 0;
@@ -34,8 +35,8 @@ public class Player : MovingObject
     public static GameObject PotionTimerDamage;
     public static float timerRemaining = 0;
     public static bool timerIsRunning = false;
-
     private float[] noiseValues;
+    #endregion
 
     // Start is called before the first frame update
     protected override void Start()

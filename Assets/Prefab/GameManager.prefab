@@ -64,6 +64,10 @@ MonoBehaviour:
   foodTiles:
   - {fileID: 5857580380964853881, guid: 8ea42992068538d46945a01f28cf77b6, type: 3}
   - {fileID: 5036339163892032564, guid: 489e4c000395cf94f917e8d4975a9176, type: 3}
+  - {fileID: 5036339163892032564, guid: 489e4c000395cf94f917e8d4975a9176, type: 3}
+  - {fileID: 5857580380964853881, guid: 8ea42992068538d46945a01f28cf77b6, type: 3}
+  - {fileID: 5857580380964853881, guid: 8ea42992068538d46945a01f28cf77b6, type: 3}
+  - {fileID: 5036339163892032564, guid: 489e4c000395cf94f917e8d4975a9176, type: 3}
   enemyTiles:
   - {fileID: 8935696749037488744, guid: 9c86d7c5beb4db84b9fffe84fb8acbb0, type: 3}
   - {fileID: 9078845441054365348, guid: ae2ae9704fd9dc04083d61c98e96f61f, type: 3}
@@ -71,6 +75,12 @@ MonoBehaviour:
   - {fileID: 1413756707577443762, guid: 980ef21f960197848bd35bb070f90ba3, type: 3}
   - {fileID: 1067698363301566787, guid: 01372d2f94757fd468d24b16a1463aac, type: 3}
   - {fileID: 331614868302643802, guid: 92f0b845709205c47a943529e2e5446f, type: 3}
+  merchantTiles:
+  - {fileID: 8658002789408450265, guid: fc2fa0d5fe3217e4e966ef62c9016755, type: 3}
+  bossTiles:
+  - {fileID: 8101538445047709633, guid: 08574365327e39845b1c34c96039bc27, type: 3}
+  bossEnemyTiles:
+  - {fileID: 3231996556153360876, guid: 4041a59db70d2174dbb066247b0c8334, type: 3}
 --- !u!114 &2185237075736100113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,3 +99,8 @@ MonoBehaviour:
   playerHealthPoints: 100
   playersTurn: 1
   level: 1
+  m_SpriteRenderer: {fileID: 0}
+  timerIsRunning: 0
+  firstLevel: 0
+  secondLevel: 0
+  test: []
