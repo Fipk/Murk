@@ -17,3 +17,9 @@ Si vous désirez faire votre propre .exe ou l'exporter sur Ios ou Android il vou
 ## Images
 
 ![Player1](https://github.com/Fipk/Murk/blob/main/Photos/SceenPlayer.PNG)
+
+![Player2](https://github.com/Fipk/Murk/blob/main/Photos/ScreenPlayer2.PNG)
+
+![Player3](https://github.com/Fipk/Murk/blob/main/Photos/ScreenPlayer3.PNG)
+
+![Player4](https://github.com/Fipk/Murk/blob/main/Photos/ScreenPlayer4.PNG)
