@@ -191,7 +191,8 @@ public class MainMenu : MonoBehaviour
         checkSeed.SetActive(true);
         inputPlay.SetActive(true);
         button.SetActive(true);
-        
+        ParangonText.SetActive(false);
+
     }
 
     public void CheckIfSeedExist()

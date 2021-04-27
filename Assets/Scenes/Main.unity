@@ -1429,6 +1429,11 @@ PrefabInstance:
       objectReference: {fileID: 802118792}
     - target: {fileID: -9078338109700759721, guid: 9869da6beafd4a54f83c20b0f8ab0190,
         type: 3}
+      propertyPath: moveTime
+      value: 0.003
+      objectReference: {fileID: 0}
+    - target: {fileID: -9078338109700759721, guid: 9869da6beafd4a54f83c20b0f8ab0190,
+        type: 3}
       propertyPath: AddDamage
       value: 
       objectReference: {fileID: 2146675590}

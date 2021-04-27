@@ -164,10 +164,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26217491ba2ecc44389bcb1e764a4e86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveTime: 0.01
+  moveTime: 0.003
   blockingLayer:
     serializedVersion: 2
     m_Bits: 1048576
   playerDamage: 20
   hp: 5
   test: []
+  canMove: 1

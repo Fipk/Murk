@@ -272,7 +272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "Parangon 1: Ennemi +1 d\xE9g\xE0ts\nParangon 2: Vie - 50"
+  m_Text: "Parangon 1: Ennemi +10 d\xE9g\xE0ts\nParangon 2: Vie - 50"
 --- !u!222 &67998564
 CanvasRenderer:
   m_ObjectHideFlags: 0
